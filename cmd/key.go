@@ -11,8 +11,8 @@ import (
 
 var keyCmd = &cobra.Command{
 	Use:   "key",
-	Short: "Read/store your api key to config file",
-	Long:  "Read/store your API key to config file\nOnly accept maximum of 1 argument, which is the API key you want to store\nIf no argument given, your stored API key will be shown instead",
+	Short: "Read/store your api key from/to config file",
+	Long:  "Read/store your API key from/to config file\nOnly accept maximum of 1 argument, which is the API key you want to store\nIf no argument given, your stored API key will be shown instead",
 	Args:  cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
