@@ -1,5 +1,7 @@
 # Mer
 
+![mer](./assets/mer.png)
+
 Mer is a small dictionary CLI application based on **Merriam-Webster free Collegiate Dictionary API**.
 
 You have to provide your own API key in order to use this app.
