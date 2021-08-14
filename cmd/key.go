@@ -8,37 +8,31 @@ import (
 	"github.com/spf13/viper"
 )
 
-var readFlag *bool
-
 var keyCmd = &cobra.Command{
 	Use:   "key",
-	Short: "create config file which holds the api key",
-	Args:  cobra.OnlyValidArgs,
+	Short: "Read/store your api key to config file",
+	Long:  "Read/store your API key to config file\nOnly accept maximum of 1 argument, which is the API key you want to store\nIf no argument given, your stored API key will be shown instead",
+	Args:  cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		if *readFlag {
+		if len(args) == 0 {
 			fmt.Println("API_KEY:", viper.GetString("API_KEY"))
 		} else {
-			if len(args) == 1 {
-				f, err := os.OpenFile(viper.ConfigFileUsed(), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-				if err != nil {
-					fmt.Println(err)
-					os.Exit(1)
-				}
-				_, err = f.Write([]byte(fmt.Sprintf("API_KEY=%s", args[0])))
-				if err != nil {
-					fmt.Println(err)
-					os.Exit(1)
-				}
-				fmt.Println("API_KEY:", args[0])
-				defer f.Close()
-			} else {
-				fmt.Println("only accepts 1 argument")
+			f, err := os.OpenFile(viper.ConfigFileUsed(), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
 			}
+			_, err = f.Write([]byte(fmt.Sprintf("API_KEY=%s", args[0])))
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+			fmt.Println("API_KEY:", args[0])
+			defer f.Close()
 		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(keyCmd)
-	readFlag = keyCmd.Flags().BoolP("read", "r", false, "task id")
 }
